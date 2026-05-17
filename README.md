@@ -1,93 +1,53 @@
-# Systematic_Finance_2026_Project
+# Metamodel for Triple-Barrier Trading Signals
 
+## Project Brief
 
+We are given a primary trading model's daily signals (-1, 0, +1) for 11 instruments across three asset classes (equity index futures, energy, metals). Our job is to build a metamodel that sits on top of those signals and predicts, for each one, the probability in [0, 1] that following the signal would be profitable under a triple-barrier exit rule.
 
-## Getting started
+In short: the primary model decides *whether to bet*, our metamodel decides *whether the bet is worth taking*.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+We must cover **at least one full asset class**. Covering more (up to all 11 instruments) is optional. Marking is focused on methodology and rigour, not on whether the metamodel beats the primary signal.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Deadline
 
-## Add your files
+**4 June 2026**
 
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+## Files
 
-```
-cd existing_repo
-git remote add origin https://gitlab.doc.ic.ac.uk/ab5825/systematic_finance_2026_project.git
-git branch -M master
-git push -uf origin master
-```
+All raw CSV files live in `data/raw`:
 
-## Integrate with your tools
+- `data/raw/ohlcv_data.csv` - daily OHLCV history for all 11 instruments, one row per (instrument, date). Columns: `date`, `instrument`, `open`, `high`, `low`, `close`, `volume`, `open_interest`. History starts in 1990 for most instruments (ES1S 1997, FESX1S 1998, NQ1S 1999).
+- `data/raw/primary_signals.csv` - daily primary signals from January 2020 onwards, one row per date, one column per instrument. Values are in {-1, 0, +1}.
 
-* [Set up project integrations](https://gitlab.doc.ic.ac.uk/ab5825/systematic_finance_2026_project/-/settings/integrations)
+Important: the released data covers up to **30 June 2022**. July to December 2022 is held out as a hidden test set. Our code will be rerun on that hidden period.
 
-## Collaborate with your team
+## Steps (roughly)
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+1. **Feature engineering** (20 marks). Build a rich feature set from OHLCV and anything we can derive: technical indicators, latent variable models (GMM, HMM), unsupervised learning methods. Document what each feature is meant to capture.
+2. **Labelling via the triple-barrier method** (20 marks). Apply triple-barrier labelling as taught in the course and justify our choice of barrier widths and time limit.
+3. **Model development and comparison** (30 marks). Train and tune at least three models drawn from across the three families: linear (e.g. regularised logistic regression), tree-based (e.g. Random Forest, XGBoost, LightGBM), and neural networks. Present a clear comparison of which model wins, on which metric, and why.
+4. **Cluster-level feature importance** (10 marks). Cluster correlated features, then apply MDI, MDA, or SHAP at the cluster level. Discuss which feature groups drive the metamodel.
+5. **Model evaluation** (20 marks). Evaluate on a clean out-of-sample period carved from the training data. Report precision, recall, F1, and AUC, a confusion matrix and decision-threshold analysis, a per-instrument breakdown, and a comparison against a baseline that follows the primary signal blindly.
+6. **(Optional) Strategy construction** (+10 bonus). Use the metamodel probabilities to build a position-sizing strategy. Full constraints (position limits, gross/net exposure, rebalancing, target volatility) are released on 20 May. Backtest metrics to report: CAGR, annualised volatility, Sharpe, Sortino, maximum drawdown, average holding period, and turnover.
 
-## Test and Deploy
+## Deliverables
 
-Use the built-in continuous integration in GitLab.
+1. **Code**. A Jupyter notebook or set of Python files that runs end-to-end and produces the deliverable CSV files below. Clean, well-documented, reproducible code is part of the mark.
+2. **Required: metamodel predictions**. A CSV covering January to June 2022, one row per (date, instrument, prediction).
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
+   ```
+   date,instrument,prediction
+   2022-01-03,cl1s,0.74
+   2022-01-03,es1s,0.51
+   ```
 
-***
+   `prediction` is the probability in [0, 1] that the primary signal is worth taking.
+3. **Optional: strategy weights** (competition track only). An additional CSV covering January to June 2022, one row per (date, instrument, weight).
 
-# Editing this README
+   ```
+   date,instrument,weight
+   2022-01-03,cl1s,0.18
+   2022-01-03,es1s,-0.05
+   ```
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+   `weight` is the signed position weight (positive long, negative short).
