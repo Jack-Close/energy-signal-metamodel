@@ -26,11 +26,11 @@ adx_14,"Wilder ADX, period=14",TA,Trend strength; ADX>25 signals trending regime
 dd_from_60d_high,close/rolling_max(60)-1,base,Drawdown from 60d high; tail-risk conditioning
 runup_from_60d_low,close/rolling_min(60)-1,base,Run-up from 60d low; momentum from trough
 days_since_60d_high,bars since rolling-60 argmax,base,Trend staleness; long lag = weakening trend
-trend_tstat_10,"OLS slope t-stat, H=10, backward",Lecture 1 — Trend Scanning,Short-term trend strength (Lecture 1 §1.3)
-trend_tstat_20,"OLS slope t-stat, H=20, backward",Lecture 1 — Trend Scanning,Medium-term trend strength
-trend_tstat_60,"OLS slope t-stat, H=60, backward",Lecture 1 — Trend Scanning,Long-term trend strength
-trend_tstat_best,"argmax |t| across H∈{10,20,60}",Lecture 1 — Trend Scanning,Best-fit trend t-stat (Lecture 1 max-|t|)
-trend_H_best,H at argmax |t|,Lecture 1 — Trend Scanning,Optimal trend horizon; characterises trend duration
+trend_tstat_10,"OLS slope t-stat, H=10, backward",Lecture 1,Short-term trend strength
+trend_tstat_20,"OLS slope t-stat, H=20, backward",Lecture 1,Medium-term trend strength
+trend_tstat_60,"OLS slope t-stat, H=60, backward",Lecture 1,Long-term trend strength
+trend_tstat_best,"argmax |t| across H in {10,20,60}",Lecture 1,Best-fit trend t-stat (max-|t| selection)
+trend_H_best,H at argmax |t|,Lecture 1,Optimal trend horizon; characterises trend duration
 energy_basket_ret_5d,cross-sectional mean of 5d logret,domain (energy),Energy complex 5d momentum
 energy_basket_vol_20d,cross-sectional mean of 20d vol,domain (energy),Energy complex volatility level
 rel_ret_vs_basket_5d,inst_5d_ret - basket_5d_ret,domain (energy),Relative momentum vs energy basket
@@ -39,10 +39,10 @@ crack_321_proxy,(2*rb_ret+ho_ret)/3 - cl_ret,domain (energy),3-2-1 crack spread 
 crack_321_z_60d,"z-score of crack_321, W=60",domain (energy),Crack spread anomaly; drives energy complex moves
 ho_cl_spread,log(ho_close/cl_close),domain (energy),Heating oil premium; seasonal demand indicator
 rb_cl_spread,log(rb_close/cl_close),domain (energy),Gasoline premium; driving season indicator
-month_sin,sin(2π*month/12),seasonality,Cyclical month encoding (peak=summer)
-month_cos,cos(2π*month/12),seasonality,Cyclical month encoding
-dow_sin,sin(2π*dow/5),seasonality,Day-of-week cycle
-dow_cos,cos(2π*dow/5),seasonality,Day-of-week cycle
+month_sin,sin(2*pi*month/12),seasonality,Cyclical month encoding
+month_cos,cos(2*pi*month/12),seasonality,Cyclical month encoding
+dow_sin,sin(2*pi*dow/5),seasonality,Day-of-week cycle
+dow_cos,cos(2*pi*dow/5),seasonality,Day-of-week cycle
 winter_indicator,"1 if month in {11,12,1,2} else 0",seasonality,Heating demand season flag
 driving_season,"1 if month in {5,6,7,8} else 0",seasonality,Gasoline demand season flag
 precious_basket_ret_5d,mean 5d logret of gc/si/pl,domain (metals),Precious metals momentum
@@ -54,22 +54,22 @@ gsr_z_60d,"z-score of GSR, W=60",domain (metals),GSR anomaly; mean-reversion sig
 gold_platinum_ratio,gc_close / pl_close,domain (metals),Macro sentiment; pl has industrial component
 silver_copper_ratio,si_close / hg_close,domain (metals),Precious/industrial split
 copper_gold_ratio,hg_close / gc_close,domain (metals),Global growth proxy (Gartman); risk-on/off signal
-avg_pairwise_corr_60d,mean off-diag of 4-metal 60d corr matrix,domain (metals),Systemic co-movement; high = macro-driven regime
-corr_dispersion_60d,std of off-diag 60d corr entries,domain (metals),Regime heterogeneity across metals
-gmm_resp_low_vol,"GMM 3-comp posterior, sorted comp 0",Lecture 2 — GMM/EM,P(low-vol regime); soft cluster membership
-gmm_resp_med_vol,"GMM 3-comp posterior, sorted comp 1",Lecture 2 — GMM/EM,P(medium-vol regime)
-gmm_resp_high_vol,"GMM 3-comp posterior, sorted comp 2",Lecture 2 — GMM/EM,P(high-vol regime); risk-off warning
-gmm_max_resp,argmax of GMM responsibilities,Lecture 2 — GMM/EM,Hard vol-regime label (0/1/2)
-hmm_filt_calm,HMM filtering p(calm|x_{1:t}),Lecture 3 — HMM forward algorithm,Calm-regime filtering posterior; no leakage
-hmm_filt_turbulent,HMM filtering p(turbulent|x_{1:t}),Lecture 3 — HMM forward algorithm,Turbulent-regime posterior; key risk feature
-hmm_next_turbulent,alpha_t @ Q (one-step forecast),Lecture 3 — HMM next-state forecast,P(turbulent at t+1); predictive risk signal
-hmm_regime_age,bars since hard-regime last switched,Lecture 3 — HMM,Regime persistence; long age = stable regime
-hmm_basket_turbulent_energy,basket HMM on energy mean logret/vol,Lecture 3 — basket HMM,Energy-wide turbulence; separates systematic from idiosyncratic
-hmm_basket_turbulent_metals,basket HMM on metals mean logret/vol,Lecture 3 — basket HMM,Metals-wide turbulence
-kmeans_cluster_id,"K=3 K-means on [ret_5d,vol_20d,vol_z] cross-section",Lecture 2 — K-means,Hard cross-sectional cluster; categorical regime label
-kmeans_cluster_size,fraction of instruments in same cluster,Lecture 2 — K-means,Cluster homogeneity; high = co-movement day
-primary_signal,primary_signals.csv direct,meta-labeling (L1),"Primary model signal {-1,0,+1} used for meta-labeling"
-primary_signal_lag1,primary_signal.shift(1),meta-labeling,Signal yesterday; autocorrelation in primary model
-primary_signal_lag5,primary_signal.shift(5),meta-labeling,Signal 5 days ago; weekly persistence
-primary_signal_streak,bars since last sign flip,meta-labeling,Signal conviction length; long streak = committed model
-primary_signal_agreement_5d,"rolling mean of signal, W=5",meta-labeling,"5-day signal agreement ∈[-1,1]; consistency measure"
+avg_pairwise_corr_60d,mean off-diagonal of 4-metal 60d corr matrix,domain (metals),Systemic co-movement; high = macro-driven regime
+corr_dispersion_60d,std of off-diagonal 60d corr entries,domain (metals),Regime heterogeneity across metals
+gmm_resp_low_vol,"GMM 3-comp posterior, comp 0 (low vol)",Lecture 2 (GMM),P(low-vol regime); soft cluster membership
+gmm_resp_med_vol,"GMM 3-comp posterior, comp 1 (mid vol)",Lecture 2 (GMM),P(medium-vol regime)
+gmm_resp_high_vol,"GMM 3-comp posterior, comp 2 (high vol)",Lecture 2 (GMM),P(high-vol regime); risk-off warning
+gmm_max_resp,argmax of GMM responsibilities,Lecture 2 (GMM),Hard vol-regime label (0/1/2)
+hmm_filt_calm,HMM filtering p(calm | x_{1:t}),Lecture 3 (HMM),Calm-regime filtering posterior; no leakage
+hmm_filt_turbulent,HMM filtering p(turbulent | x_{1:t}),Lecture 3 (HMM),Turbulent-regime posterior; key risk feature
+hmm_next_turbulent,alpha_t @ Q (one-step forecast),Lecture 3 (HMM),P(turbulent at t+1); predictive risk signal
+hmm_regime_age,bars since hard-regime last switched,Lecture 3 (HMM),Regime persistence; long age = stable regime
+hmm_basket_turbulent_energy,basket HMM on energy mean logret/vol,Lecture 3 (basket HMM),Energy-wide turbulence
+hmm_basket_turbulent_metals,basket HMM on metals mean logret/vol,Lecture 3 (basket HMM),Metals-wide turbulence
+kmeans_cluster_id,"K=3 K-means on [ret_5d, vol_20d, volume_z_20d]",Lecture 2 (K-means),Hard cross-sectional cluster; categorical regime label
+kmeans_cluster_size,fraction of instruments in same cluster,Lecture 2 (K-means),Cluster homogeneity; high = co-movement day
+primary_signal,primary_signals.csv direct,meta-labeling,"Primary model signal {-1,0,+1}"
+primary_signal_lag1,primary_signal.shift(1),meta-labeling,Signal yesterday
+primary_signal_lag5,primary_signal.shift(5),meta-labeling,Signal 5 days ago
+primary_signal_streak,bars since last sign flip,meta-labeling,Signal conviction length
+primary_signal_agreement_5d,"rolling mean of signal, W=5",meta-labeling,"5-day signal agreement in [-1, 1]"
