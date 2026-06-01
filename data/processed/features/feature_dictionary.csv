@@ -45,17 +45,6 @@ dow_sin,sin(2*pi*dow/5),seasonality,Day-of-week cycle
 dow_cos,cos(2*pi*dow/5),seasonality,Day-of-week cycle
 winter_indicator,"1 if month in {11,12,1,2} else 0",seasonality,Heating demand season flag
 driving_season,"1 if month in {5,6,7,8} else 0",seasonality,Gasoline demand season flag
-precious_basket_ret_5d,mean 5d logret of gc/si/pl,domain (metals),Precious metals momentum
-precious_basket_vol_20d,mean 20d vol of gc/si/pl,domain (metals),Precious metals vol level
-corr_to_precious_60d,60d corr with mean precious ret,domain (metals),Precious vs idiosyncratic exposure
-rel_ret_vs_precious_5d,inst_5d_ret - precious_basket_5d_ret,domain (metals),Relative momentum vs precious basket
-gold_silver_ratio,gc_close / si_close,domain (metals),Risk-off indicator; high GSR = gold outperforms
-gsr_z_60d,"z-score of GSR, W=60",domain (metals),GSR anomaly; mean-reversion signal
-gold_platinum_ratio,gc_close / pl_close,domain (metals),Macro sentiment; pl has industrial component
-silver_copper_ratio,si_close / hg_close,domain (metals),Precious/industrial split
-copper_gold_ratio,hg_close / gc_close,domain (metals),Global growth proxy (Gartman); risk-on/off signal
-avg_pairwise_corr_60d,mean off-diagonal of 4-metal 60d corr matrix,domain (metals),Systemic co-movement; high = macro-driven regime
-corr_dispersion_60d,std of off-diagonal 60d corr entries,domain (metals),Regime heterogeneity across metals
 gmm_resp_low_vol,"GMM 3-comp posterior, comp 0 (low vol)",Lecture 2 (GMM),P(low-vol regime); soft cluster membership
 gmm_resp_med_vol,"GMM 3-comp posterior, comp 1 (mid vol)",Lecture 2 (GMM),P(medium-vol regime)
 gmm_resp_high_vol,"GMM 3-comp posterior, comp 2 (high vol)",Lecture 2 (GMM),P(high-vol regime); risk-off warning
@@ -65,7 +54,6 @@ hmm_filt_turbulent,HMM filtering p(turbulent | x_{1:t}),Lecture 3 (HMM),Turbulen
 hmm_next_turbulent,alpha_t @ Q (one-step forecast),Lecture 3 (HMM),P(turbulent at t+1); predictive risk signal
 hmm_regime_age,bars since hard-regime last switched,Lecture 3 (HMM),Regime persistence; long age = stable regime
 hmm_basket_turbulent_energy,basket HMM on energy mean logret/vol,Lecture 3 (basket HMM),Energy-wide turbulence
-hmm_basket_turbulent_metals,basket HMM on metals mean logret/vol,Lecture 3 (basket HMM),Metals-wide turbulence
 kmeans_cluster_id,"K=3 K-means on [ret_5d, vol_20d, volume_z_20d]",Lecture 2 (K-means),Hard cross-sectional cluster; categorical regime label
 kmeans_cluster_size,fraction of instruments in same cluster,Lecture 2 (K-means),Cluster homogeneity; high = co-movement day
 primary_signal,primary_signals.csv direct,meta-labeling,"Primary model signal {-1,0,+1}"
