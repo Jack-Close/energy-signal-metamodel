@@ -54,7 +54,7 @@ def compute_point_metrics(
     proba: np.ndarray,
     threshold: float,
 ) -> PointMetrics:
-    """Compute the full Part-5 metric tuple at one threshold.
+    """Compute the full Part 5 metric tuple at one threshold.
 
     Notes
     -----

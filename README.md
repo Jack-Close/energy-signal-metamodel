@@ -1,6 +1,7 @@
 # Metamodel for Triple-Barrier Trading Signals
+Systematic Trading with Machine Learning Algorithms - Summer Term 2026 - Group 10
 
-## What this project does
+## Summary
 
 We are given a primary trading model's daily signals (-1, 0, +1) and we build a metamodel that sits on top of them. For each signal the metamodel outputs a probability in [0, 1] that following the signal would be profitable under a triple-barrier exit rule. The primary model decides whether to bet, the metamodel decides whether the bet is worth taking.
 

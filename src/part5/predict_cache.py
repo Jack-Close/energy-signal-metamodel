@@ -1,5 +1,4 @@
-"""Run teammate model notebooks headlessly and cache their predictions.
-
+"""
 WHY THIS EXISTS
 ---------------
 The four per-instrument model notebooks (WTI / Heating-Oil / Natural-gas /
@@ -17,10 +16,6 @@ For each instrument:
      keyed on (date, instrument, model, proba, y_true).
 
 Idempotency: if the cache file exists, the notebook execution is skipped.
-
-This runs the teammate's models AS-IS (no retraining, no retuning). It only
-exfiltrates the predict_proba outputs they already produced. That keeps Part 5
-inside its own scope.
 """
 
 from __future__ import annotations
@@ -65,7 +60,7 @@ def _probe_cell_source(pickle_path: Path) -> str:
     test-feature DataFrame differently (X_test_wti, X_test_ho, ...).
     """
     return f"""
-# === Part-5 probe cell — appended by predict_cache.py ===
+# === Part 5 probe cell — appended by predict_cache.py ===
 import pickle as _pkl
 _locals = dict(locals())
 

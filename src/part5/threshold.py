@@ -229,7 +229,7 @@ def is_inverted_auc(auc: float, margin: float = 0.05) -> bool:
 
     AUC below 0.5 means the model's probabilities are anti-correlated with the
     realized labels — high-proba rows are *less* likely to be positive than
-    low-proba rows. The standalone Part-5 audit's "within margin of 0.5" check
+    low-proba rows. The standalone Part 5 audit's "within margin of 0.5" check
     catches near-coin-flip rankings but is symmetric: it doesn't distinguish
     "uninformative" from "actively backwards", which is the case that quietly
     survives orientation gates run on a full test set that mixes a correctly

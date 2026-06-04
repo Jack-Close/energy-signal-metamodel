@@ -1,4 +1,4 @@
-"""Tidy CSV / Excel writers for the Part-5 results bundle.
+"""Tidy CSV / Excel writers for the Part 5 results bundle.
 
 Conventions
 -----------
