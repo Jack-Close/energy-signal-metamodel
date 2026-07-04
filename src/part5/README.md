@@ -1,12 +1,10 @@
 # Part 5 — Model Evaluation
 
-Owner: RR (rr2025).
-
 ## What this is
 
 The threshold / false-positive / precision-over-recall workstream for the
-metamodel coursework. Consumes the existing per-instrument model notebooks
-AS-IS and adds the evaluation layer the spec requires:
+metamodel. Consumes the existing per-instrument model notebooks
+AS-IS and adds the evaluation layer:
 
 - frozen decision threshold per instrument, picked on a leak-free selection
   slice (NOT the deliverable window);
