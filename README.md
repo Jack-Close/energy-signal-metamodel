@@ -2,6 +2,8 @@
 
 A probability-weighted filter for systematic trading signals on energy futures, built on triple-barrier labeling and gradient-boosted / neural metamodels.
 
+Developed collaboratively as part of a team project.
+
 ## Summary
 
 Given a primary trading model's daily directional signals (-1, 0, +1), this project trains a metamodel that sits on top of it. For each signal the metamodel outputs a probability in [0, 1] that following it would be profitable under a triple-barrier exit rule. The primary model decides whether to bet; the metamodel decides whether the bet is worth taking.
